@@ -166,7 +166,7 @@
 
                 <!-- See All Button -->
                 <div class="mt-4">
-                    <a href="#carContent" class="btn btn-primary">See All</a>
+                    <a href="{{ Route('seeAll') }}" class="btn btn-primary">See All</a>
                 </div>
             </div>
         </div>
@@ -209,8 +209,7 @@
             </div>
         </div>
         <div class="social d-flex justify-content-center">
-            <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
-            <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+            <a class="mx-2" href="#!"><i class="fab fa-instagram"></i></a>
             <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
         </div>
     </div>
