@@ -2,18 +2,6 @@
 @section('title', 'Home')
 @section('konten')
 
-<style>
-    select#carBrand {
-        position: relative;
-        z-index: 1050; /* Pastikan angka ini lebih besar dari navbar */
-        transition: none; /* Menonaktifkan transisi untuk dropdown */
-    }
-
-    #carContent {
-        margin-top: 20px; /* Memberikan jarak antara dropdown dan konten */
-    }
-</style>
-
 <!-- Masthead -->
 <header class="masthead visual-hidden">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center">
@@ -22,7 +10,7 @@
             <!-- Dropdown untuk Pilihan Merek Mobil -->
             <div class="container mt-5">
                 <select id="carBrand" class="form-select" style="background-color: rgba(255, 255, 255, 0.5); border: none; width: 100%; margin: 10px 0;">
-                    <option value="" disabled selected>Pilih Merek Mobil</option>
+                    <option value="" disabled selected >Pilih Merek Mobil</option>
                     <option value="BMW">BMW</option>
                     <option value="Rolls Royce">Rolls Royce</option>
                     <option value="Mercedes-Benz">Mercedes-Benz</option>
@@ -61,7 +49,41 @@
                                     <p>Harga mobil</p>
                                 </div>
                             </div>
-                            <!-- Add more content as needed -->
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
                         </div>
                     </div>`,
                 "Rolls Royce": `
@@ -76,7 +98,20 @@
                                     <p>Harga mobil</p>
                                 </div>
                             </div>
-                            <!-- Add more content as needed -->
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/home-car.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/home-car.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
                         </div>
                     </div>`,
                 "Mercedes-Benz": `
@@ -91,7 +126,20 @@
                                     <p>Harga mobil</p>
                                 </div>
                             </div>
-                            <!-- Add more content as needed -->
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="menu">
+                                    <img src="{{ asset('assets/img/contoh-1.jpg') }}" style="width: 100%; height: 200px; object-fit: cover;" alt="">
+                                    <h4 class="mt-2">Tipe Mobil</h4>
+                                    <p>Harga mobil</p>
+                                </div>
+                            </div>
                         </div>
                     </div>`
             };
