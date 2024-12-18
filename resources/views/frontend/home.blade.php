@@ -7,8 +7,8 @@
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
         <div class="d-flex justify-content-center">
             <div class="text-center">
-                <h1 class="mx-auto my-0 text-uppercase">CarBridge</h1>
-                <h2 class="text-white-50 mx-auto mt-2 mb-5">Menghubungkan Anda dengan Mobil Impian dari Seluruh Dunia.</h2>
+                <h1 class="mx-auto my-0 text-uppercase">{{ $home->nama_situs ?? 'belum di tentukan' }}</h1>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5">{{ $home->selogan ?? 'belum di tentukan' }}</h2>
             </div>
         </div>
     </div>
@@ -22,12 +22,7 @@
             <div class="col-lg-6">
                 <h2 class="text-white mb-4">About Us</h2>
                 <p class="text-white-50">
-                    Di CarBridge, kami menghubungkan Anda dengan pilihan mobil kelas atas dari seluruh dunia. Sebagai perusahaan impor terkemuka,
-                    kami berfokus pada penyediaan kendaraan premium yang memenuhi standar kualitas dan kemewahan terbaik. Dengan pengalaman dan jaringan internasional yang luas,
-                    kami menghadirkan mobil impian Anda langsung ke tangan Anda, memberikan kepuasan dalam setiap perjalanan.
-                    Kami percaya bahwa mobil bukan hanya alat transportasi, tetapi juga simbol prestise dan gaya hidup. Oleh karena itu,
-                    kami berkomitmen untuk menawarkan layanan yang dapat diandalkan, dengan pilihan mobil terbaik dari berbagai merek ternama. Di CarBridge,
-                    setiap kendaraan yang kami impor dirancang untuk memenuhi ekspektasi tertinggi pelanggan kami, memberikan pengalaman berkendara yang luar biasa.
+                    {{ $about->konten ?? 'belum di tentukan' }}
                 </p>
             </div>
             <!-- Kolom untuk carousel gambar -->
@@ -63,17 +58,18 @@
 </section>
 
 
-<!-- Projects-->
-<section class="projects-section bg-light" id="projects">
+<!-- Testimonial-->
+<section class="projects-section bg-light" id="Testimonial">
     <div class="container px-4 px-lg-5">
         <!-- Featured Project Row-->
         <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
             <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" style="width: 800px; height: 440px; object-fit: cover;" src="assets/img/contoh-1.jpg" alt="..." /></div>
             <div class="col-xl-4 col-lg-5">
                 <div class="featured-text text-center text-lg-left">
-                    <h4>Menghadirkan kualitas terbaik dengan layanan yang dapat diandalkan</h4>
-                    <p class="text-black-50 mb-0">Kami memastikan produk yang Anda butuhkan hadir dengan kualitas terjamin. Pilih kami sebagai mitra dalam perjalanan bisnis Anda.</p>
+                    <h4>{{ $firstTestimoni->label ?? 'belum di tentukan' }}</h4>
+                    <p class="text-black-50 mb-0">{{ $firstTestimoni->konten ?? 'belum di tentukan' }}</p>
                 </div>
+                <!-- Kami memastikan produk yang Anda butuhkan hadir dengan kualitas terjamin. Pilih kami sebagai mitra dalam perjalanan bisnis Anda. -->
             </div>
         </div>
         <!-- Project One Row -->
@@ -86,9 +82,10 @@
                 <div class="bg-black text-center h-100 project">
                     <div class="d-flex h-100">
                         <div class="project-text w-100 my-auto text-center text-lg-left">
-                            <h4 class="text-white">Produk berkualitas, pengiriman tepat waktu</h4>
+                            <h4 class="text-white">{{ $secondTestimoni->label ?? 'belum di tentukan' }}</h4>
                             <p class="mb-0 text-white-50">
-                                Dengan pengalaman kami, setiap kebutuhan Anda akan kami penuhi dengan harga kompetitif dan pengiriman yang dapat diandalkan.
+                                {{ $secondTestimoni->konten ?? 'belum di tentukan' }}
+                                <!-- Dengan pengalaman kami, setiap kebutuhan Anda akan kami penuhi dengan harga kompetitif dan pengiriman yang dapat diandalkan. -->
                             </p>
                         </div>
                     </div>
@@ -106,14 +103,19 @@
                 <div class="bg-black text-center h-100 project">
                     <div class="d-flex h-100">
                         <div class="project-text w-100 my-auto text-center text-lg-right">
-                            <h4 class="text-white">Pilih kualitas, pilih kami</h4>
+                            <h4 class="text-white">{{ $thirdTestimoni->label ?? 'belum di tentukan' }}</h4>
                             <p class="mb-0 text-white-50">
-                                Kami hadir untuk memenuhi setiap kebutuhan produk Anda, memberikan layanan import yang memudahkan bisnis Anda berkembang.
+                                {{ $thirdTestimoni->konten ?? 'belum di tentukan' }}
+                                <!-- Kami hadir untuk memenuhi setiap kebutuhan produk Anda, memberikan layanan import yang memudahkan bisnis Anda berkembang. -->
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="mt-4 justify-content-center">
+            <a href="{{ Route('seeAll') }}" class="btn btn-primary">See All Testimonial</a>
         </div>
 
     </div>
@@ -183,7 +185,7 @@
                         <i class="fas fa-map-marked-alt text-primary mb-2"></i>
                         <h4 class="text-uppercase m-0">Address</h4>
                         <hr class="my-4 mx-auto" />
-                        <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+                        <div class="text-black-50">{{ $contact->lokasi ?? 'Lokasi belum di tentukan' }}</div>
                     </div>
                 </div>
             </div>
@@ -193,7 +195,7 @@
                         <i class="fas fa-envelope text-primary mb-2"></i>
                         <h4 class="text-uppercase m-0">Email</h4>
                         <hr class="my-4 mx-auto" />
-                        <div class="small text-black-50"><a href="#!">hello@yourdomain.com</a></div>
+                        <div class="text-black-50"><a href="#!">{{ $contact->email ?? 'Email belum di tentukan' }}</a></div>
                     </div>
                 </div>
             </div>
@@ -203,14 +205,14 @@
                         <i class="fas fa-mobile-alt text-primary mb-2"></i>
                         <h4 class="text-uppercase m-0">Phone</h4>
                         <hr class="my-4 mx-auto" />
-                        <div class="small text-black-50">+1 (555) 902-8832</div>
+                        <div class="text-black-50">{{ $contact->phone_number ?? 'Phone number belum di tentukan' }}</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="social d-flex justify-content-center">
-            <a class="mx-2" href="#!"><i class="fab fa-instagram"></i></a>
-            <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+            <a class="mx-2" href="{{ $contact->url_instagram ?? '' }}"><i class="fab fa-instagram"></i></a>
+            <a class="mx-2" href="{{ $contact->url_github ?? '' }}"><i class="fab fa-github"></i></a>
         </div>
     </div>
 </section>
