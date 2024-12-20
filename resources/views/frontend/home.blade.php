@@ -119,6 +119,11 @@
     </div>
 </section>
 
+@php
+    // Shuffle the collection and take 3 random items
+    $randomCars = $cars->shuffle()->take(3);
+@endphp
+
 <!-- Cars Slide -->
 <section class="signup-section" id="signup">
     <div class="container px-4 px-lg-5">
@@ -127,32 +132,27 @@
                 <!-- Carousel -->
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        @foreach ($randomCars as $index => $car)
+                        <button type="button" data-bs-target="#carouselExampleIndicators" 
+                                data-bs-slide-to="{{ $index }}" 
+                                class="{{ $loop->first ? 'active' : '' }}" 
+                                aria-current="{{ $loop->first ? 'true' : 'false' }}" 
+                                aria-label="Slide {{ $index + 1 }}"></button>
+                        @endforeach
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" class="d-block w-100" style="width: 800px; height: 440px; object-fit: cover;" alt="...">
+                        @foreach ($randomCars as $index => $car)
+                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                            <img src="{{ asset('assets/img/' . $car->image) }}" 
+                                 class="d-block w-100" 
+                                 style="width: 800px; height: 440px; object-fit: cover;" 
+                                 alt="{{ $car->merek }}">
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>BMW</h5>
-                                <p>Explore the finest BMW models.</p>
+                                <h5>{{ $car->merek }}</h5>
+                                <p>{{ $car->car_type }}</p>
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <img src="{{ asset('assets/img/home-car.jpg') }}" class="d-block w-100" style="width: 800px; height: 440px; object-fit: cover;" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Rolls Royce</h5>
-                                <p>Luxury at its finest.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{{ asset('assets/img/contoh-1.jpg') }}" class="d-block w-100" style="width: 800px; height: 440px; object-fit: cover;" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Mercedes-Benz</h5>
-                                <p>Class and performance combined.</p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -172,6 +172,7 @@
         </div>
     </div>
 </section>
+
 
 <!-- Contact-->
 <section class="contact-section bg-black">

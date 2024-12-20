@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\about;
+use App\Models\car;
 use App\Models\Home;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\View;
@@ -26,9 +27,11 @@ class AppServiceProvider extends ServiceProvider
          // Ambil data pertama dari tabel 'home'
          $home = Home::first();
          $about = about::first();
+         $car = car::all();
         
          // Bagikan data ke semua tampilan
          View::share('home', $home);
          View::share('about', $about);
+         View::share('cars', $car); 
     }
 }
