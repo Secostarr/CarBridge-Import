@@ -9,7 +9,7 @@
 <header class="masthead visual-hidden">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center">
         <div class="d-flex flex-column w-100">
-            <div class="card" style="background-color: rgba(255, 255, 255, 0.8); border: none; width: 100%; margin: 10px 0;">
+            <div class="card" style="background-color: rgba(255, 255, 255, 0.6); border: none; width: 100%; margin: 10px 0;">
                 <div class="p-5">
                     <!-- Detail Mobil Section -->
                     <div class="row gx-0 mb-4 mb-lg-5">
@@ -38,15 +38,15 @@
                                     quos magni accusantium. Saepe tenetur omnis exercitationem officiis dicta.
                                 </p>
 
-                                <!-- Spesifikasi Mobil -->
+                                <!-- Spesifikasi Mobil -->  
                                 <div class="mt-5">
                                     <h5 class="text-start mb-3"><strong>Spesifikasi :</strong></h5>
                                     <ul class="list-unstyled text-start">
-                                        <li><strong>Mesin:</strong> 2.0L 4-Cylinder</li>
-                                        <li><strong>Transmisi:</strong> Otomatis</li>
-                                        <li><strong>Kapasitas Penumpang:</strong> 5 Orang</li>
-                                        <li><strong>Fitur:</strong> AC, GPS, Kamera Mundur, dll.</li>
-                                        <li><strong>Harga:</strong> IDR 450.000.000</li>
+                                        <li class="mb-1"><strong>Mesin:</strong> 2.0L 4-Cylinder</li>
+                                        <li class="mb-1"><strong>Transmisi:</strong> Otomatis</li>
+                                        <li class="mb-1"><strong>Kapasitas Penumpang:</strong> 5 Orang</li>
+                                        <li class="mb-1"><strong>Fitur:</strong> AC, GPS, Kamera Mundur, dll.</li>
+                                        <li class="mb-1"><strong>Harga:</strong> IDR 450.000.000</li>
                                     </ul>
                                 </div>
                             </div>

@@ -21,9 +21,7 @@
             <!-- Kolom untuk teks -->
             <div class="col-lg-6">
                 <h2 class="text-white mb-4">About Us</h2>
-                <p class="text-white-50">
-                    {{ $about->konten ?? 'belum di tentukan' }}
-                </p>
+                <p class="text-white-50">{{ $about->konten ?? 'belum di tentukan' }}</p>
             </div>
             <!-- Kolom untuk carousel gambar -->
             <div class="col-lg-6">
@@ -115,7 +113,7 @@
         </div>
 
         <div class="mt-4 justify-content-center">
-            <a href="{{ Route('seeAll') }}" class="btn btn-primary">See All Testimonial</a>
+            <a href="{{ Route('testimoni') }}" class="btn btn-primary">See All Testimonial</a>
         </div>
 
     </div>

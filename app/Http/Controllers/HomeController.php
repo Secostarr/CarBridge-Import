@@ -37,4 +37,9 @@ class HomeController extends Controller
     {
         return view('frontend.detail');   
     }
+
+    public function testimoni()
+    {
+        return view('frontend.testimonial');
+    }
 }
