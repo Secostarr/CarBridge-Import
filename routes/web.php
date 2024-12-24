@@ -16,13 +16,10 @@ Route::get('/getCarsByMerek/{merek}', [HomeController::class, 'getCarsByMerek'])
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('backend.dashboard');
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [UserLoginController::class, 'login'])->name('login');
-    Route::post('/login', [UserLoginController::class, 'auth'])->name('auth');
+    Route::get('/admin/login', [UserLoginController::class, 'login'])->name('login');
+    Route::post('/admin/login/auth', [UserLoginController::class, 'auth'])->name('auth');
 });
 Route::get('/carbridge/item/detail', [HomeController::class, 'detail'])->name('detail');
 
 
-
-
-
-Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

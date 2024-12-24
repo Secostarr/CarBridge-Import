@@ -1,12 +1,10 @@
 @extends('backend.layouts.app')
-
-@section('title', 'Dashboard')
-
+@section('title', 'dashboard')
 @section('content')
-<div class="row bg-light rounded align-items-center justify-content-center mx-0">
-    <div class="col-md-6 text-center p-3">
-         <h3>Hi, Selamat datang di Website Carbridge</h3>
-    </div>
+
+<div>
+    <h3 class="fw-bold mb-3">Dashboard</h3>
+    <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
 </div>
 
 @endsection
