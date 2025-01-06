@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
-    //
+    public function cars()
+    {
+        return view('backend.cars');
+    }
 }
