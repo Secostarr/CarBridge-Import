@@ -12,9 +12,10 @@ Route::get('/carbridge/item/seeAll', [HomeController::class, 'seeAll'])->name('s
 
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('backend.dashboard');
 
-Route::middleware(['guest'])->group(function () {
+
     Route::get('/login', [UserLoginController::class, 'login'])->name('login');
-    Route::post('/login', [UserLoginController::class, 'auth'])->name('auth');
-});
+    Route::post('/login/auth', [UserLoginController::class, 'auth'])->name('auth');
+
+
 Route::get('/carbridge/item/detail', [HomeController::class, 'detail'])->name('detail');
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');

@@ -1,65 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gofashion Login</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/seodashlogo.png" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+
+        .login-form {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        <div
-            class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
-            <div class="d-flex align-items-center justify-content-center w-100">
-                <div class="row justify-content-center w-100">
-                    <div class="col-md-8 col-lg-6 col-xxl-3">
-                        <div class="card mb-0">
-                            <div class="card-body">
-                                <p class="text-center">Welcome To Carbridge</p>
-                                @if ($errors->has('login_error'))
-                                <div class="alert alert-danger text-center">
-                                    {{ $errors->first('login_error') }}
-                                </div>
-                                @endif
-                                <form action="{{ route('auth') }}" method="POST">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Email</label>
-                                        <input type="text" class="form-control" name="email"
-                                            id="exampleInputEmail1" aria-describedby="emailHelp">
-                                        <div class="text-danger">
-                                            @error('email')
-                                            {{ $message }}
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="password"
-                                            id="exampleInputPassword1">
-                                        <div class="text-danger">
-                                            @error('password')
-                                            {{ $message }}
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4">Sign In</button>
-                                </form>
-                            </div>
-                        </div>
+
+    <section class="masthead visual-hidden">
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+            <div class="login-form">
+                <h2 class="text-center mb-4">Login</h2>
+                <form action="{{ Route('auth') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
             </div>
         </div>
-    </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
