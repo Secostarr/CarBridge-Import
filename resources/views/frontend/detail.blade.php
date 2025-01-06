@@ -9,7 +9,7 @@
 <header class="masthead visual-hidden">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center">
         <div class="d-flex flex-column w-100">
-            <div class="card" style="background-color: rgba(255, 255, 255, 0.8); border: none; width: 100%; margin: 10px 0;">
+            <div class="card" style="background-color: rgba(255, 255, 255, 0.6); border: none; width: 100%; margin: 10px 0;">
                 <div class="p-5">
                     <!-- Detail Mobil Section -->
                     <div class="row gx-0 mb-4 mb-lg-5">
@@ -21,7 +21,7 @@
                             <img class="img-fluid" src="{{ asset('assets/img/contoh-mobil-1.jpg') }}" alt="Mobil" style="width: 100%; height: 440px; object-fit: cover;" />
                             <!-- Contact Nomer -->
                             <div class="mt-4 text-center">
-                                <p class="mb-1"><strong>Hubungi Kami:</strong></p>
+                                <p class="mb-1"><strong>Contact Us:</strong></p>
                                 <button id="contactBtn" class="btn btn-success" style="font-size: 18px;">
                                     <i class="bi bi-chat-dots px-3"></i>
                                 </button>
@@ -31,22 +31,22 @@
                         <!-- Deskripsi dan Spesifikasi Mobil -->
                         <div class="col-lg-6 ps-4"> <!-- ps-4 untuk memberi padding kiri -->
                             <div class="featured-text text-center text-lg-left mt-4">
-                                <label for=""><strong>Deskripsi Singkat:</strong></label>
+                                <label for=""><strong>Description about car:</strong></label>
                                 <p class="text-black mb-0 text-start">
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                     Amet rerum, illo fugit sed deserunt sapiente cum, qui beatae cupiditate voluptas rem
                                     quos magni accusantium. Saepe tenetur omnis exercitationem officiis dicta.
                                 </p>
 
-                                <!-- Spesifikasi Mobil -->
+                                <!-- Spesifikasi Mobil -->  
                                 <div class="mt-5">
                                     <h5 class="text-start mb-3"><strong>Spesifikasi :</strong></h5>
                                     <ul class="list-unstyled text-start">
-                                        <li><strong>Mesin:</strong> 2.0L 4-Cylinder</li>
-                                        <li><strong>Transmisi:</strong> Otomatis</li>
-                                        <li><strong>Kapasitas Penumpang:</strong> 5 Orang</li>
-                                        <li><strong>Fitur:</strong> AC, GPS, Kamera Mundur, dll.</li>
-                                        <li><strong>Harga:</strong> IDR 450.000.000</li>
+                                        <li class="mb-1"><strong>car engine:</strong> 2.0L 4-Cylinder</li>
+                                        <li class="mb-1"><strong>Transmission:</strong> Otomatis</li>
+                                        <li class="mb-1"><strong>Passenger capacity:</strong> 5 Orang</li>
+                                        <li class="mb-1"><strong>Features:</strong> AC, GPS, Kamera Mundur, dll.</li>
+                                        <li class="mb-1"><strong>Price:</strong> IDR 450.000.000</li>
                                     </ul>
                                 </div>
                             </div>
