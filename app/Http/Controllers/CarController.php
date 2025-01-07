@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\car;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
     public function cars()
     {
-        return view('backend.cars');
+        $car = car::all();
+        return view('backend.cars', compact('car'));
     }
 }
