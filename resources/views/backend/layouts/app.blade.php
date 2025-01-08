@@ -7,6 +7,7 @@
     <meta
         content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
         name="viewport" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
 
 
@@ -230,7 +231,7 @@
             <div class="container">
                 <div class="page-inner">
 
-                        @yield('content')
+                    @yield('content')
 
                 </div>
             </div>

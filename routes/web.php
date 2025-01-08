@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\CarController;
@@ -30,3 +31,12 @@ Route::get('/admin/dashboard/testi', [AdminController::class, 'testi'])->name('a
 Route::get('/admin/dashboard/contact', [AdminController::class, 'contact'])->name('admin.dashboard.contact');
 
 Route::get('/admin/dashboard/cars', [CarController::class, 'cars'])->name('admin.dashboard.cars');
+
+Route::get('about', [AboutController::class, 'index'])->name('backend.about.index');
+Route::post('about', [AboutController::class, 'store'])->name('backend.about.store');
+Route::put('about/{id}', [AboutController::class, 'update'])->name('backend.about.update');
+Route::delete('about/{id}', [AboutController::class, 'destroy'])->name('backend.about.destroy');
+
+Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home'); 
+Route::post('/admin/home', [HomeController::class, 'store'])->name('admin.home.store'); 
+Route::put('/admin/home/{id}', [HomeController::class, 'update'])->name('admin.home.update'); 

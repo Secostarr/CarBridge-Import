@@ -56,7 +56,12 @@
         selogan: `<p class="text-muted">Selogan website yang sekarang digunakan adalah:</p>
                   <h5 class="text-dark fw-bold">{{ $home->selogan ?? 'Data belum ditentukan' }}</h5>`,
         mediaUtama: `<p class="text-muted">Media utama yang sekarang digunakan adalah:</p>
-                     <img src="{{ $home->media_utama ?? '' }}" alt="Media Utama" class="img-fluid">`
+                     @if(isset($home) && $home->media_utama)
+                        <img src="{{ asset('storage/' . $home->media_utama) }}" alt="Media Utama" class="img-fluid">
+                    @else
+                        <p>No media available.</p>
+                    @endif
+                    `
     };
 
     function showData(key) {
@@ -65,57 +70,99 @@
     }
 
     // Tambah Data
-    const addButton = document.getElementById('addButton');
-    if (addButton) {
-        addButton.addEventListener('click', function () {
-            swal({
-                title: "Tambah Data",
-                content: createForm(),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const namaSitus = document.getElementById('nama_situs').value;
-                    const selogan = document.getElementById('selogan').value;
-                    const mediaUtama = document.getElementById('media_utama').files[0];
-                    
-                    if (!namaSitus || !selogan || !mediaUtama) {
-                        swal("Gagal!", "Semua field wajib diisi!", "error");
-                        return;
-                    }
+    addButton.addEventListener('click', function() {
+        swal({
+            title: "Tambah Data",
+            content: createForm(),
+            buttons: ["Batal", "Simpan"],
+        }).then((willSave) => {
+            if (willSave) {
+                const namaSitus = document.getElementById('nama_situs').value;
+                const selogan = document.getElementById('selogan').value;
+                const mediaUtama = document.getElementById('media_utama').files[0];
 
-                    console.log("Data ditambahkan:", { namaSitus, selogan, mediaUtama });
-                    swal("Berhasil!", "Data berhasil ditambahkan", "success");
+                if (!namaSitus || !selogan || !mediaUtama) {
+                    swal("Gagal!", "Semua field wajib diisi!", "error");
+                    return;
                 }
-            });
+
+                const formData = new FormData();
+                formData.append('nama_situs', namaSitus);
+                formData.append('selogan', selogan);
+                formData.append('media_utama', mediaUtama);
+
+                fetch('{{ route("admin.home.store") }}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        swal("Berhasil!", data.message, "success").then(() => {
+                            location.reload(); // Refresh halaman setelah berhasil
+                        });
+                    })
+                    .catch((error) => {
+                        swal("Gagal!", "Terjadi kesalahan saat menambahkan data", "error");
+                        console.error(error);
+                    });
+            }
         });
-    }
+    });
 
     // Edit Data
-    const editButton = document.getElementById('editButton');
-    if (editButton) {
-        editButton.addEventListener('click', function () {
-            swal({
-                title: "Edit Data",
-                content: createForm({
-                    namaSitus: "{{ $home->nama_situs ?? '' }}",
-                    selogan: "{{ $home->selogan ?? '' }}",
-                    mediaUtama: "{{ $home->media_utama ?? '' }}"
-                }),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const namaSitus = document.getElementById('nama_situs').value;
-                    const selogan = document.getElementById('selogan').value;
-                    const mediaUtama = document.getElementById('media_utama').files[0];
-                    
-                    console.log("Data diperbarui:", { namaSitus, selogan, mediaUtama });
-                    swal("Berhasil!", "Data berhasil diperbarui", "success");
-                }
-            });
-        });
-    }
+    editButton.addEventListener('click', function() {
+        swal({
+            title: "Edit Data",
+            content: createForm({
+                namaSitus: "{{ $home->nama_situs ?? '' }}",
+                selogan: "{{ $home->selogan ?? '' }}",
+                mediaUtama: "{{ asset('storage/' . $home->media_utama ?? '') }}",
+            }),
+            buttons: ["Batal", "Simpan"],
+        }).then((willSave) => {
+            if (willSave) {
+                const namaSitus = document.getElementById('nama_situs').value;
+                const selogan = document.getElementById('selogan').value;
+                const mediaUtama = document.getElementById('media_utama').files[0];
 
-    function createForm(defaults = { namaSitus: '', selogan: '', mediaUtama: '' }) {
+                const formData = new FormData();
+                formData.append('nama_situs', namaSitus);
+                formData.append('selogan', selogan);
+                if (mediaUtama) {
+                    formData.append('media_utama', mediaUtama);
+                }
+
+                fetch('{{ route("admin.home.update", $home->id ?? 0) }}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-HTTP-Method-Override': 'PUT', // Override method to PUT
+                        },
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        swal("Berhasil!", data.message, "success").then(() => {
+                            location.reload(); // Refresh halaman setelah berhasil
+                        });
+                    })
+                    .catch((error) => {
+                        swal("Gagal!", "Terjadi kesalahan saat memperbarui data", "error");
+                        console.error(error);
+                    });
+            }
+        });
+    });
+
+
+    function createForm(defaults = {
+        namaSitus: '',
+        selogan: '',
+        mediaUtama: ''
+    }) {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = `
             <input class="form-control mt-2" placeholder="Nama Situs" id="nama_situs" value="${defaults.namaSitus}">
