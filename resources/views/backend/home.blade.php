@@ -119,7 +119,7 @@
             content: createForm({
                 namaSitus: "{{ $home->nama_situs ?? '' }}",
                 selogan: "{{ $home->selogan ?? '' }}",
-                mediaUtama: "{{ asset('storage/' . $home->media_utama ?? '') }}",
+                mediaUtama: "{{ $home ? asset('storage/' . $home->media_utama) : '' }}",
             }),
             buttons: ["Batal", "Simpan"],
         }).then((willSave) => {

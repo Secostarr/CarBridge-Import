@@ -3,7 +3,7 @@
 @section('konten')
 
 <!-- Masthead-->
-<header class="masthead">
+<header class="masthead" style="background: url('storage/{{ $home ->media_utama }}')">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
         <div class="d-flex justify-content-center">
             <div class="text-center">
