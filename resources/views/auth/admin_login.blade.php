@@ -76,7 +76,7 @@
 
 <body>
 
-    <header class="masthead">
+    <header class="masthead" style="background: url('../storage/{{ $home->media_utama }}')">
         <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
             <div class="d-flex">
                 <div class="text-center">
@@ -100,19 +100,12 @@
                             </div>
                         </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-            </div>
-        </div>
+                </div>
     </header>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script>
-        document.getElementById('showPassword').addEventListener('change', function () {
+        document.getElementById('showPassword').addEventListener('change', function() {
             var passwordField = document.getElementById('password');
             if (this.checked) {
                 passwordField.type = 'text';

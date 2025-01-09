@@ -2,20 +2,28 @@
 @section('title', 'Dashboard - Home')
 @section('content')
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
 <div class="container-fluid">
     <h1 class="text-dark fw-bold">Halaman Home</h1>
 
     @if (is_null($home))
     <div class="mt-5">
-        <button id="addButton" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Data</button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahHome">
+            + Tambah Data
+        </button>
     </div>
     @else
     <div class="mt-5">
-        <button id="editButton" class="btn btn-warning"><i class="fas fa-edit"></i> Edit Data</button>
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editHome">
+            <i class="fas fa-edit"></i> Edit Data
+        </button>
     </div>
+
+    @if(session('success'))
+    <div class="alert alert-success mt-3">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <div class="mt-4">
         <div class="card shadow-sm border-0">
@@ -49,6 +57,80 @@
     @endif
 </div>
 
+<!-- Modal Tambah -->
+<div class="modal fade" id="tambahHome" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Home</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.home.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nama_situs" class="form-label">Nama Situs</label>
+                        <input type="text" id="nama_situs" name="nama_situs" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="selogan" class="form-label">Selogan situs</label>
+                        <input type="text" id="selogan" name="selogan" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="media_utama" class="form-label">Media_utama</label>
+                        <input type="file" id="media_utama" name="media_utama" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="editHome" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Home</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.home.update', $home->id_home) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nama_situs" class="form-label">Nama Situs</label>
+                        <input type="text" id="nama_situs" name="nama_situs" class="form-control" value="{{ $home->nama_situs }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="selogan" class="form-label">Selogan situs</label>
+                        <input type="text" id="selogan" name="selogan" class="form-control" value="{{ $home->selogan }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="media_utama" class="form-label">Media Utama</label>
+                        @if(isset($home->media_utama))
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $home->media_utama) }}" alt="Media Utama" class="img-fluid" style="max-width: 100px; height: auto;">
+                        </div>
+                        @endif
+                        <input type="file" id="media_utama" name="media_utama" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
     const data = {
         namaSitus: `<p class="text-muted">Nama website yang digunakan sekarang adalah:</p>
@@ -67,113 +149,6 @@
     function showData(key) {
         const container = document.getElementById('dataContainer');
         container.innerHTML = data[key] || '<h5 class="text-center text-danger">Data tidak ditemukan</h5>';
-    }
-
-    // Tambah Data
-    addButton.addEventListener('click', function() {
-        swal({
-            title: "Tambah Data",
-            content: createForm(),
-            buttons: ["Batal", "Simpan"],
-        }).then((willSave) => {
-            if (willSave) {
-                const namaSitus = document.getElementById('nama_situs').value;
-                const selogan = document.getElementById('selogan').value;
-                const mediaUtama = document.getElementById('media_utama').files[0];
-
-                if (!namaSitus || !selogan || !mediaUtama) {
-                    swal("Gagal!", "Semua field wajib diisi!", "error");
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append('nama_situs', namaSitus);
-                formData.append('selogan', selogan);
-                formData.append('media_utama', mediaUtama);
-
-                fetch('{{ route("admin.home.store") }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        },
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        swal("Berhasil!", data.message, "success").then(() => {
-                            location.reload(); // Refresh halaman setelah berhasil
-                        });
-                    })
-                    .catch((error) => {
-                        swal("Gagal!", "Terjadi kesalahan saat menambahkan data", "error");
-                        console.error(error);
-                    });
-            }
-        });
-    });
-
-    // Edit Data
-    editButton.addEventListener('click', function() {
-        swal({
-            title: "Edit Data",
-            content: createForm({
-                namaSitus: "{{ $home->nama_situs ?? '' }}",
-                selogan: "{{ $home->selogan ?? '' }}",
-                mediaUtama: "{{ $home ? asset('storage/' . $home->media_utama) : '' }}",
-            }),
-            buttons: ["Batal", "Simpan"],
-        }).then((willSave) => {
-            if (willSave) {
-                const namaSitus = document.getElementById('nama_situs').value;
-                const selogan = document.getElementById('selogan').value;
-                const mediaUtama = document.getElementById('media_utama').files[0];
-
-                const formData = new FormData();
-                formData.append('nama_situs', namaSitus);
-                formData.append('selogan', selogan);
-                if (mediaUtama) {
-                    formData.append('media_utama', mediaUtama);
-                }
-
-                fetch('{{ route("admin.home.update", $home->id ?? 0) }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'X-HTTP-Method-Override': 'PUT', // Override method to PUT
-                        },
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        swal("Berhasil!", data.message, "success").then(() => {
-                            location.reload(); // Refresh halaman setelah berhasil
-                        });
-                    })
-                    .catch((error) => {
-                        swal("Gagal!", "Terjadi kesalahan saat memperbarui data", "error");
-                        console.error(error);
-                    });
-            }
-        });
-    });
-
-
-    function createForm(defaults = {
-        namaSitus: '',
-        selogan: '',
-        mediaUtama: ''
-    }) {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = `
-            <input class="form-control mt-2" placeholder="Nama Situs" id="nama_situs" value="${defaults.namaSitus}">
-            <input class="form-control mt-2" placeholder="Selogan" id="selogan" value="${defaults.selogan}">
-            <div class="mt-2">
-                <label class="form-label">Media Utama (Gambar)</label>
-                <input type="file" class="form-control" id="media_utama" accept="image/*">
-                <img src="${defaults.mediaUtama}" alt="Media Utama" class="img-fluid mt-2" id="previewMedia" style="max-height: 150px;">
-            </div>
-        `;
-        return wrapper;
     }
 </script>
 

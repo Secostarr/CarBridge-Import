@@ -6,7 +6,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Masthead -->
-<header class="masthead visual-hidden">
+<header class="masthead" style="background: url('../storage/{{ $home->media_utama }}')">p
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center">
         <div class="d-flex flex-column w-100">
             <div class="card" style="background-color: rgba(255, 255, 255, 0.6); border: none; width: 100%; margin: 10px 0;">

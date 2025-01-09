@@ -82,7 +82,7 @@ class HomeController extends Controller
             'media_utama' => $mediaUtamaPath,
         ]);
 
-        return response()->json(['message' => 'Data berhasil ditambahkan.'], 200);
+        return redirect()->back()->with('success', 'Data Berhasil Di Tambahkan');
     }
 
     public function update(Request $request, $id)
@@ -113,6 +113,6 @@ class HomeController extends Controller
             'media_utama' => $mediaUtamaPath,
         ]);
 
-        return response()->json(['message' => 'Data berhasil diperbarui.'], 200);
+        return redirect()->back()->with('success', 'Data Berhasil Di Perbarui');
     }
 }
