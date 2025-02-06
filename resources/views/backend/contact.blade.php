@@ -10,11 +10,15 @@
 
     @if (is_null($contact))
     <div class="mt-5">
-        <button id="addButton" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Data</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahContact">
+            + Tambah Data
+        </button>
     </div>
     @else
     <div class="mt-5">
-        <button id="editButton" class="btn btn-warning"><i class="fas fa-edit"></i> Edit Data</button>
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editContact">
+            <i class="fas fa-edit"></i> Edit Data
+        </button>
     </div>
 
     <div class="mt-4">
@@ -57,6 +61,91 @@
     @endif
 </div>
 
+<!-- Modal Tambah -->
+<div class="modal fade" id="tambahContact" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Kontak</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ Route('backend.contact.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="lokasi" class="form-label">Lokasi</label>
+                        <input type="text" id="lokasi" name="lokasi" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Nomor Telepon</label>
+                        <input type="number" id="phone_number" name="phone_number" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="url_github" class="form-label">Url GitHub</label>
+                        <input type="url" id="url_github" name="url_github" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="url_instagram" class="form-label">Url Instagram</label>
+                        <input type="url" id="url_instagram" name="url_instagram" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+@if($contact)
+<div class="modal fade" id="editContact" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Kontak</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('backend.contact.update', $contact->id_contact) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="lokasi" class="form-label">Lokasi</label>
+                        <input type="text" id="lokasi" name="lokasi" class="form-control" value="{{ $contact->lokasi }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ $contact->email }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Nomor Telepon</label>
+                        <input type="number" id="phone_number" name="phone_number" class="form-control" value="{{ $contact->phone_number }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="url_github" class="form-label">Url GitHub</label>
+                        <input type="url" id="url_github" name="url_github" class="form-control" value="{{ $contact->url_github }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="url_instagram" class="form-label">Url Instagram</label>
+                        <input type="url" id="url_instagram" name="url_instagram" class="form-control" value="{{ $contact->url_instagram }}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+
 <script>
     // Data yang akan ditampilkan
     const data = {
@@ -76,73 +165,6 @@
     function showData(key) {
         const container = document.getElementById('dataContainer');
         container.innerHTML = data[key] || '<h5 class="text-center text-danger">Data tidak ditemukan</h5>';
-    }
-
-    // Fungsi untuk menampilkan SweetAlert tambah data
-    const addButton = document.getElementById('addButton');
-    if (addButton) {
-        addButton.addEventListener('click', function () {
-            swal({
-                title: "Tambah Data Contact",
-                content: createForm(),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const lokasi = document.getElementById('lokasi').value;
-                    const email = document.getElementById('email').value;
-                    const phoneNumber = document.getElementById('phone_number').value;
-                    const urlGithub = document.getElementById('url_github').value;
-                    const urlInstagram = document.getElementById('url_instagram').value;
-                    
-                    // Simpan data ke server
-                    console.log("Data contact ditambahkan:", { lokasi, email, phoneNumber, urlGithub, urlInstagram });
-                    swal("Berhasil!", "Data berhasil ditambahkan", "success");
-                }
-            });
-        });
-    }
-
-    // Fungsi untuk menampilkan SweetAlert edit data
-    const editButton = document.getElementById('editButton');
-    if (editButton) {
-        editButton.addEventListener('click', function () {
-            swal({
-                title: "Edit Data Contact",
-                content: createForm({
-                    lokasi: "{{ $contact->lokasi ?? '' }}",
-                    email: "{{ $contact->email ?? '' }}",
-                    phoneNumber: "{{ $contact->phone_number ?? '' }}",
-                    urlGithub: "{{ $contact->url_github ?? '' }}",
-                    urlInstagram: "{{ $contact->url_instagram ?? '' }}"
-                }),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const lokasi = document.getElementById('lokasi').value;
-                    const email = document.getElementById('email').value;
-                    const phoneNumber = document.getElementById('phone_number').value;
-                    const urlGithub = document.getElementById('url_github').value;
-                    const urlInstagram = document.getElementById('url_instagram').value;
-                    
-                    // Simpan data yang diperbarui ke server
-                    console.log("Data contact diperbarui:", { lokasi, email, phoneNumber, urlGithub, urlInstagram });
-                    swal("Berhasil!", "Data berhasil diperbarui", "success");
-                }
-            });
-        });
-    }
-
-    // Fungsi untuk membuat form input data
-    function createForm(defaults = { lokasi: '', email: '', phoneNumber: '', urlGithub: '', urlInstagram: '' }) {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = `
-            <input class="form-control mt-2" placeholder="Lokasi" id="lokasi" value="${defaults.lokasi}">
-            <input class="form-control mt-2" placeholder="Email" id="email" value="${defaults.email}">
-            <input class="form-control mt-2" placeholder="Nomor Telepon" id="phone_number" value="${defaults.phoneNumber}">
-            <input class="form-control mt-2" placeholder="URL GitHub" id="url_github" value="${defaults.urlGithub}">
-            <input class="form-control mt-2" placeholder="URL Instagram" id="url_instagram" value="${defaults.urlInstagram}">
-        `;
-        return wrapper;
     }
 </script>
 

@@ -76,23 +76,36 @@
 
 <body>
 
-    <header class="masthead" style="background: url('../storage/{{ $home->media_utama }}')">
+    <header class="masthead" style="background-image: url('{{ asset('storage/' . $home->media_utama) }}');">
         <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
             <div class="d-flex">
-                <div class="text-center">
+                <div class="">
                     <div class="card">
-                        <form action="" method="POST">
+                        @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                        @endif
+
+
+                        <div class="text-center form-group">
+                            <h2>Admin - Login</h2>
+                        </div>
+
+                        <form action="{{ route('admin.auth') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" id="username" placeholder="Enter your username" />
+                                <input type="text" name="username" id="username" placeholder="Enter your username" required />
                             </div>
                             <div class="form-group position-relative">
                                 <label for="password">Password</label>
-                                <input type="password" name="password" id="password" placeholder="Enter your password" />
+                                <input type="password" name="password" id="password" placeholder="Enter your password" required />
                             </div>
                             <div class="form-check mb-3">
-                                <input type="checkbox" id="showPassword" class="form-check-input">
+                                <div class="col-auto">
+                                    <input type="checkbox" id="showPassword" class="form-check-input">
+                                </div>
                                 <label for="showPassword" class="form-check-label">Show Password</label>
                             </div>
                             <div class="mt-3">

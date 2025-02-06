@@ -13,39 +13,46 @@ class HomeController extends Controller
 {
     public function home()
     {
+        $randomCars = car::where('status', 'for_sale')->inRandomOrder()->take(3)->get();
         $testimoi = Testimonial::orderby('id_testimonial')->take(3)->get();
         $contact = contact::first();
 
-        if ($testimoi->isEmpty()) {
-            // Jika tidak ada data
-            // Anda bisa memberikan nilai default atau penanganan error di sini
-            $firstTestimoni = null;
-            $secondTestimoni = null;
-            $thirdTestimoni = null;
-        } else {
-            $firstTestimoni = $testimoi[0];  // ID pertama
-            $secondTestimoni = $testimoi[1]; // ID kedua
-            $thirdTestimoni = $testimoi[2];  // ID ketiga
+        // Inisialisasi default
+        $firstTestimoni = null;
+        $secondTestimoni = null;
+        $thirdTestimoni = null;
+
+        // Cek apakah data testimonial tersedia
+        if ($testimoi->isNotEmpty()) {
+            $firstTestimoni = $testimoi[0] ?? null;  // Ambil elemen pertama jika ada
+            $secondTestimoni = $testimoi[1] ?? null; // Ambil elemen kedua jika ada
+            $thirdTestimoni = $testimoi[2] ?? null;  // Ambil elemen ketiga jika ada
         }
 
-        return view('frontend.home', compact('firstTestimoni', 'secondTestimoni', 'thirdTestimoni', 'contact'));
+        return view('frontend.home', compact('firstTestimoni', 'secondTestimoni', 'thirdTestimoni', 'contact', 'randomCars'));
     }
+
 
     public function seeAll()
     {
-        $mereks = car::select('merek')->distinct()->get();
+        $mereks = Car::where('status', 'for_sale')->select('merek')->distinct()->get();
         return view('frontend.seeAll', compact('mereks'));
     }
 
     public function getCarsByMerek($merek)
     {
-        $cars = car::where('merek', $merek)->get();
+        $cars = Car::where('merek', $merek)
+            ->where('status', 'for_sale') // Filter hanya yang for_sale
+            ->get();
         return response()->json($cars);
     }
 
-    public function detail()
+
+    public function detail($id_cars)
     {
-        return view('frontend.detail');
+        $car = car::findOrFail($id_cars);
+
+        return view('frontend.detail', compact('car'));
     }
 
     public function testimoni()

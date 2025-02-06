@@ -2,20 +2,28 @@
 @section('title', 'Dashboard - About')
 @section('content')
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
 <div class="container-fluid">
     <h1 class="text-dark fw-bold">Halaman About</h1>
 
     @if (is_null($about))
-    <div class="">
-        <button id="addButton" class="btn btn-primary mt-5"><i class="fas fa-plus"></i> Tambah Data</button>
+    <div class="mt-5">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahAbout">
+            + Tambah Data
+        </button>
     </div>
     @else
-    <div class="">
-        <button id="editButton" class="btn btn-warning mt-5"><i class="fas fa-edit"></i> Edit Data</button>
+    <div class="mt-5">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAbout">
+            <i class="fas fa-edit"></i> Edit Data
+        </button>
     </div>
+
+    @if(session('success'))
+    <div class="alert alert-success mt-3">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <div class="mt-4">
         <div class="card shadow-sm border-0">
@@ -48,78 +56,101 @@
     @endif
 </div>
 
+<!-- tambah data -->
+<div class="modal fade" id="tambahAbout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah About</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('backend.about.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="konten" class="form-label">Konten About</label>
+                        <textarea id="konten" name="konten" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="media_about" class="form-label">Media About (Disarankan tidak memiliki background)</label>
+                        <input type="file" id="media_about" name="media_about" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if($about)
+<!-- Modal Edit -->
+<div class="modal fade" id="editAbout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit About</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.about.update', $about->id_about) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="konten" class="form-label">Konten About</label>
+                        <textarea id="konten" name="konten" class="form-control" rows="5">{{ $about->konten }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="media_utama" class="form-label">Media Utama (Disarankan tidak memiliki background)</label>
+                        @if(isset($about->media_about))
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $about->media_about) }}" alt="Media About" class="img-fluid" style="max-width: 100px; height: auto;">
+                        </div>
+                        @endif
+                        <input type="file" id="media_about" name="media_about" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+
+<style>
+    .img-fluid {
+        max-width: 100%;
+        /* Gambar tidak akan melebihi lebar container */
+        height: auto;
+        /* Proporsi gambar tetap terjaga */
+        max-height: 400px;
+        /* Tetapkan tinggi maksimum agar tidak terlalu besar */
+        object-fit: contain;
+        /* Pastikan gambar tidak terdistorsi */
+    }
+</style>
+
 <script>
     const data = {
         kontenAbout: `<p class="text-muted">Konten about yang digunakan sekarang:</p>
-                      <h5 class="text-dark fw-bold">{{ $about->konten ?? 'Data belum ditentukan' }}</h5>`,
+                  <h5 class="text-dark fw-bold">{{ $about->konten ?? 'Data belum ditentukan' }}</h5>`,
         mediaAbout: `<p class="text-muted">Media about yang di tampilkan sekarang adalah:</p>
-                     <img src="{{ $about->media_about ?? '' }}" alt="Media About" class="img-fluid">`
+                 @if(isset($about) && $about->media_about)
+                    <img src="{{ asset('storage/' . $about->media_about) }}" alt="Media Utama" class="img-fluid">
+                 @else
+                    <p>No media available.</p>  
+                 @endif`
     };
+
 
     function showData(key) {
         const container = document.getElementById('dataContainer');
         container.innerHTML = data[key] || '<h5 class="text-center text-danger">Data tidak ditemukan</h5>';
-    }
-
-    // Tambah Data
-    const addButton = document.getElementById('addButton');
-    if (addButton) {
-        addButton.addEventListener('click', function () {
-            swal({
-                title: "Tambah Data",
-                content: createForm(),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const kontenAbout = document.getElementById('konten_about').value;
-                    const mediaAbout = document.getElementById('media_about').files[0];
-
-                    if (!kontenAbout || !mediaAbout) {
-                        swal("Gagal!", "Semua field wajib diisi!", "error");
-                        return;
-                    }
-
-                    console.log("Data ditambahkan:", { kontenAbout, mediaAbout });
-                    swal("Berhasil!", "Data berhasil ditambahkan", "success");
-                }
-            });
-        });
-    }
-
-    // Edit Data
-    const editButton = document.getElementById('editButton');
-    if (editButton) {
-        editButton.addEventListener('click', function () {
-            swal({
-                title: "Edit Data",
-                content: createForm({
-                    kontenAbout: "{{ $about->konten ?? '' }}",
-                    mediaAbout: "{{ $about->media_about ?? '' }}"
-                }),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const kontenAbout = document.getElementById('konten_about').value;
-                    const mediaAbout = document.getElementById('media_about').files[0];
-
-                    console.log("Data diperbarui:", { kontenAbout, mediaAbout });
-                    swal("Berhasil!", "Data berhasil diperbarui", "success");
-                }
-            });
-        });
-    }
-
-    function createForm(defaults = { kontenAbout: '', mediaAbout: '' }) {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = `
-            <textarea class="form-control mt-2" placeholder="Konten About" id="konten_about">${defaults.kontenAbout}</textarea>
-            <div class="mt-2">
-                <label class="form-label">Media About (Gambar)</label>
-                <input type="file" class="form-control" id="media_about" accept="image/*">
-                <img src="${defaults.mediaAbout}" alt="Media About" class="img-fluid mt-2" id="previewMedia" style="max-height: 150px;">
-            </div>
-        `;
-        return wrapper;
     }
 </script>
 

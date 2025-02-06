@@ -3,7 +3,7 @@
 @section('konten')
 
 <!-- Masthead-->
-<header class="masthead" style="background: url('storage/{{ $home ->media_utama }}')">
+<header class="masthead" style="background-image: url('{{ asset('storage/' . $home->media_utama) }}');">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
         <div class="d-flex justify-content-center">
             <div class="text-center">
@@ -25,30 +25,8 @@
             </div>
             <!-- Kolom untuk carousel gambar -->
             <div class="col-lg-6">
-                <div id="aboutCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <!-- Slide 1 -->
-                        <div class="carousel-item active">
-                            <img src="assets/img/home-car-2-removebg.png" alt="Car Image 1" class="img-fluid rounded">
-                        </div>
-                        <!-- Slide 2 -->
-                        <div class="carousel-item">
-                            <img src="assets/img/home-car-2-removebg.png" alt="Car Image 2" class="img-fluid rounded">
-                        </div>
-                        <!-- Slide 3 -->
-                        <div class="carousel-item">
-                            <img src="assets/img/home-car-2-removebg.png" alt="Car Image 3" class="img-fluid rounded">
-                        </div>
-                    </div>
-                    <!-- Kontrol Carousel -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#aboutCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                <div class="carousel-item active">
+                <img src="{{ asset('storage/' . $about->media_about) }}" alt="Car Image 1" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -120,11 +98,14 @@
 </section>
 
 @php
-    // Shuffle the collection and take 3 random items
-    $randomCars = $cars->shuffle()->take(3);
+// Jika tidak ada data, tampilkan placeholder
+if ($randomCars->isEmpty()) {
+    $randomCars = collect([
+        (object) ['merek' => 'Default Car', 'car_type' => 'Sedan', 'image' => 'default.jpg']
+    ]);
+}
 @endphp
 
-<!-- Cars Slide -->
 <section class="signup-section" id="signup">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5">
@@ -133,20 +114,20 @@
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         @foreach ($randomCars as $index => $car)
-                        <button type="button" data-bs-target="#carouselExampleIndicators" 
-                                data-bs-slide-to="{{ $index }}" 
-                                class="{{ $loop->first ? 'active' : '' }}" 
-                                aria-current="{{ $loop->first ? 'true' : 'false' }}" 
-                                aria-label="Slide {{ $index + 1 }}"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide-to="{{ $index }}"
+                            class="{{ $loop->first ? 'active' : '' }}"
+                            aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                            aria-label="Slide {{ $index + 1 }}"></button>
                         @endforeach
                     </div>
                     <div class="carousel-inner">
                         @foreach ($randomCars as $index => $car)
                         <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                            <img src="{{ asset('assets/img/' . $car->image) }}" 
-                                 class="d-block w-100" 
-                                 style="width: 800px; height: 440px; object-fit: cover;" 
-                                 alt="{{ $car->merek }}">
+                            <img src="{{ asset('storage/' . $car->photo) }}"
+                                class="d-block w-100"
+                                style="width: 800px; height: 440px; object-fit: cover;"
+                                alt="{{ $car->merek }}">
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>{{ $car->merek }}</h5>
                                 <p>{{ $car->car_type }}</p>
@@ -166,12 +147,13 @@
 
                 <!-- See All Button -->
                 <div class="mt-4">
-                    <a href="{{ Route('seeAll') }}" class="btn btn-primary">See All</a>
+                    <a href="{{ route('seeAll') }}" class="btn btn-primary">See All</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 
 <!-- Contact-->

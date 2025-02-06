@@ -8,64 +8,53 @@ use Illuminate\Support\Facades\Storage;
 
 class AboutController extends Controller
 {
-    public function index()
-    {
-        $about = About::first(); // Ambil data pertama di tabel About
-        return view('backend.about.index', compact('about'));
-    }
-    
+
     public function store(Request $request)
     {
         $request->validate([
-            'konten_about' => 'required|string',
+            'konten' => 'required|string',
             'media_about' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $filePath = $request->file('media_about')->store('about_media', 'public');
 
         About::create([
-            'konten' => $request->konten_about,
+            'konten' => $request->konten,
             'media_about' => $filePath,
         ]);
 
-        return response()->json(['message' => 'Data berhasil ditambahkan'], 201);
+        return redirect()->back()->with('success', 'Data Berhasil Di Tambahkan');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_about)
     {
-        $about = About::findOrFail($id);
+        $about = about::findOrFail($id_about);
+        // dd($about);
 
         $request->validate([
-            'konten_about' => 'required|string',
+            'konten' => 'nullable|string',
             'media_about' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Menyimpan media_about lama
+        $mediaAboutPath = $about->media_about;
+
         if ($request->hasFile('media_about')) {
-            // Hapus file lama jika ada
-            if ($about->media_about && Storage::disk('public')->exists($about->media_about)) {
-                Storage::disk('public')->delete($about->media_about);
+            // Delete the old file if exists
+            if ($mediaAboutPath && Storage::disk('public')->exists($mediaAboutPath)) {
+                Storage::disk('public')->delete($mediaAboutPath);
             }
 
-            $filePath = $request->file('media_about')->store('about_media', 'public');
-            $about->media_about = $filePath;
+            // Store the new file
+            $mediaAboutPath = $request->file('media_about')->store('media_about', 'public');
         }
 
-        $about->konten = $request->konten_about;
-        $about->save();
+        // Update data about
+        $about->update([
+            'konten' => $request->konten,
+            'media_about' => $mediaAboutPath,
+        ]);
 
-        return response()->json(['message' => 'Data berhasil diperbarui'], 200);
-    }
-
-    public function destroy($id)
-    {
-        $about = About::findOrFail($id);
-
-        if ($about->media_about && Storage::disk('public')->exists($about->media_about)) {
-            Storage::disk('public')->delete($about->media_about);
-        }
-
-        $about->delete();
-
-        return response()->json(['message' => 'Data berhasil dihapus'], 200);
+        return redirect()->back()->with('success', 'Data Berhasil Di Perbarui');
     }
 }

@@ -90,6 +90,7 @@
     </div>
 </div>
 
+@if($home)
 <!-- Modal Edit -->
 <div class="modal fade" id="editHome" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -128,8 +129,16 @@
         </div>
     </div>
 </div>
+@endif
 
-
+<style>
+    .img-fluid {
+        max-width: 100%; /* Gambar tidak akan melebihi lebar container */
+        height: auto;   /* Proporsi gambar tetap terjaga */
+        max-height: 400px; /* Tetapkan tinggi maksimum agar tidak terlalu besar */
+        object-fit: contain; /* Pastikan gambar tidak terdistorsi */
+    }
+</style>
 
 <script>
     const data = {
@@ -138,7 +147,7 @@
         selogan: `<p class="text-muted">Selogan website yang sekarang digunakan adalah:</p>
                   <h5 class="text-dark fw-bold">{{ $home->selogan ?? 'Data belum ditentukan' }}</h5>`,
         mediaUtama: `<p class="text-muted">Media utama yang sekarang digunakan adalah:</p>
-                     @if(isset($home) && $home->media_utama)
+                    @if(isset($home) && $home->media_utama)
                         <img src="{{ asset('storage/' . $home->media_utama) }}" alt="Media Utama" class="img-fluid">
                     @else
                         <p>No media available.</p>

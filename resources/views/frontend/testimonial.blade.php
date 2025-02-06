@@ -6,7 +6,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Masthead -->
-<header class="masthead visual-hidden">
+<header class="masthead" style="background-image: url('{{ asset('storage/' . $home->media_utama) }}');">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center">
         <div class="d-flex flex-column w-100">
             <!-- Slider -->
@@ -33,7 +33,7 @@
                             <div class="card p-4" style="background-color: rgba(255, 255, 255, 0.6); border: none; width: 100%; margin: 10px 0;">
                                 <div class="row g-0">
                                     <div class="col-md-5">
-                                        <img src="{{ asset('assets/img/' . $car->image) }}" class="img-fluid rounded" alt="Foto Mobil" style="width: 100%; height: 400px; object-fit: cover;">
+                                        <img src="{{ asset('storage/' . $car->photo) }}" class="img-fluid rounded" alt="Foto Mobil" style="width: 100%; height: 400px; object-fit: cover;">
                                     </div>
                                     <div class="col-md-7">
                                         <div class="card-body">

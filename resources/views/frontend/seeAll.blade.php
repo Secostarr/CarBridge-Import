@@ -2,7 +2,7 @@
 @section('title', 'Home')
 @section('konten')
 
-<header class="masthead visual-hidden">
+<header class="masthead" style="background-image: url('{{ asset('storage/' . $home->media_utama) }}');">
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center">
         <div class="d-flex flex-column w-100">
             <!-- Dropdown untuk Pilihan Merek Mobil -->
@@ -17,7 +17,7 @@
 
             <!-- Konten Mobil -->
             <div class="container mt-5" id="carContent">
-                <p class="text-center text-muted">Silakan pilih merek mobil untuk melihat data.</p>
+                <p class="text-center">Silakan pilih merek mobil untuk melihat data.</p>
             </div>
         </div>
     </div>
@@ -46,11 +46,13 @@
                             if (index % 3 === 0) content += `<div class="carousel-item ${isActive}"><div class="row g-3">`;
                             content += `
                                 <div class="col-md-4">
+                                    <a style="color: black; text-decoration: none;" href="/carbridge/item/detail/${car.id_cars}">
                                     <div class="card p-3" style="background-color: rgba(255, 255, 255, 0.5); border: none;">
                                         <img src="/storage/${car.photo}" style="width: 100%; height: 200px; object-fit: cover;" alt="${car.car_type}">
                                         <h4 class="mt-2">${car.merek}</h4>
                                         <p>Harga: ${car.price}</p>
                                     </div>
+                                    </a>
                                 </div>
                             `;
                             if ((index + 1) % 3 === 0 || index === data.length - 1) content += `</div></div>`;
@@ -80,5 +82,6 @@
         });
     });
 </script>
+
 
 @endsection

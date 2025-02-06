@@ -16,11 +16,21 @@ class UserLoginController extends Controller
     public function auth(Request $request)
     {
         $credintials = $request->validate([
-            'email' => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
         if (Auth::attempt($credintials)) {
-            return redirect()->route('dashboard');
+            return redirect()->route('admin.dashboard');
+        } else {
+            return back()->with('error', 'username atau password salah');
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login')->with('success', 'Logout Berhasil');
     }
 }

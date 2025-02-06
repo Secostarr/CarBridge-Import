@@ -2,23 +2,25 @@
 @section('title', 'Dashboard - Testimonial')
 @section('content')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
 <div class="container-fluid">
     <h1 class="text-dark fw-bold">Halaman Testimonial</h1>
 
-    @if ($testi->isEmpty() || $testi->count() < 3)
-    <div class="mt-5">
-        <button id="addButton" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Data</button>
+    @if(session('success'))
+    <div class="alert alert-success mt-3">
+        {{ session('success') }}
     </div>
     @endif
-    @if (!$testi->isEmpty())
-    <div class="mt-5">
-        <button id="editButton" class="btn btn-warning"><i class="fas fa-edit"></i> Edit Data</button>
-    </div>
-    @endif  
 
-    @if (!$testi->isEmpty())    
+    @if ($testimoni->count() < 3)
+    <div class="mt-5">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahTesti">
+            + Tambah Data
+        </button>
+    </div>
+    @endif
+    
+    @if(!$testimoni->isEmpty())
     <div class="mt-4">
         <div class="card shadow-sm border-0">
             <div class="card-header bg-primary text-white">
@@ -30,9 +32,9 @@
                 <div class="row">
                     <div class="col-md-4 text-center">
                         <!-- Tombol Pemilihan -->
-                        @foreach ($testi as $key => $item)
-                        <button class="btn btn-outline-secondary w-100 mb-2" onclick="showData('konten{{ $key + 1 }}')">
-                            <i class="fas fa-globe"></i> Konten {{ $key + 1 }}
+                        @foreach($testimoni as $key => $testi)
+                        <button class="btn btn-outline-secondary w-100 mb-2" onclick="showData('kontenTesti{{ $key + 1 }}')">
+                            <i class="fas fa-file-alt"></i> Konten Testimoni {{ $key + 1 }}
                         </button>
                         @endforeach
                     </div>
@@ -49,83 +51,93 @@
     @endif
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<!-- Modal Tambah -->
+<div class="modal fade" id="tambahTesti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Testimonial</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('backend.testimonial.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="label" class="form-label">Label Testimonial</label>
+                        <input type="text" id="label" name="label" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="konten" class="form-label">Konten Testimonial</label>
+                        <textarea id="konten" name="konten" class="form-control" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if($testimoni)
+<!-- Modal Edit -->
+<div class="modal fade" id="editTesti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Testimonial</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="label_edit" class="form-label">Label Testimonial</label>
+                        <input type="text" id="label_edit" name="label" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="konten_edit" class="form-label">Konten Testimonial</label>
+                        <textarea id="konten_edit" name="konten_testi" class="form-control" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
 
 <script>
-    // Data yang akan ditampilkan
     const data = {
-        @foreach ($testi as $key => $item)
-        konten{{ $key + 1 }}: `  
-            <p class="text-muted">Konten Testimonial yang digunakan sekarang:</p>
-            <h4 class="text-dark fw-bold">Konten Testi : {{ $key + 1 }}</h4>
-            <h5 class="text-dark fw-bold">Label : {{ $item->label }}</h5>
-            <h5 class="text-dark fw-bold">Konten : {{ $item->konten }}</h5>
-        `,
+        @foreach($testimoni as $key => $testi)
+        kontenTesti{{ $key + 1 }}: `
+            <p class="text-muted">Isi testimonial <strong>{{ $key + 1 }}</strong>:</p>
+            <h5 class="text-dark fw-bold">Label : {{ $testi->label }}</h5>
+            <h5 class="text-dark fw-bold">Konten : {{ $testi->konten }}</h5>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTesti"
+                onclick="editData('{{ route('backend.testimonial.update', $testi->id_testimonial) }}', '{{ $testi->label }}', '{{ $testi->konten }}')">
+                <i class="fas fa-edit"></i> Edit Data
+            </button>`,
         @endforeach
     };
 
-    // Fungsi untuk menampilkan data
     function showData(key) {
         const container = document.getElementById('dataContainer');
         container.innerHTML = data[key] || '<h5 class="text-center text-danger">Data tidak ditemukan</h5>';
     }
 
-    // Tambah Data
-    const addButton = document.getElementById('addButton');
-    if (addButton) {
-        addButton.addEventListener('click', function () {
-            swal({
-                title: "Tambah Data Testimonial",
-                content: createForm(),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const label = document.getElementById('label').value;
-                    const konten = document.getElementById('konten').value;
-
-                    if (!label || !konten) {
-                        swal("Gagal!", "Semua field wajib diisi!", "error");
-                        return;
-                    }
-
-                    console.log("Testimonial ditambahkan:", { label, konten });
-                    swal("Berhasil!", "Data berhasil ditambahkan", "success");
-                }
-            });
-        });
-    }
-
-    // Edit Data
-    const editButton = document.getElementById('editButton');
-    if (editButton) {
-        editButton.addEventListener('click', function () {
-            swal({
-                title: "Edit Data Testimonial",
-                content: createForm({
-                    label: "{{ $testi->first()->label ?? '' }}",
-                    konten: "{{ $testi->first()->konten ?? '' }}"
-                }),
-                buttons: ["Batal", "Simpan"],
-            }).then((willSave) => {
-                if (willSave) {
-                    const label = document.getElementById('label').value;
-                    const konten = document.getElementById('konten').value;
-
-                    console.log("Testimonial diperbarui:", { label, konten });
-                    swal("Berhasil!", "Data berhasil diperbarui", "success");
-                }
-            });
-        });
-    }
-
-    function createForm(defaults = { label: '', konten: '' }) {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = `
-            <input type="text" class="form-control mt-2" placeholder="Label" id="label" value="${defaults.label}">
-            <textarea class="form-control mt-2" placeholder="Konten Testimonial" id="konten">${defaults.konten}</textarea>
-        `;
-        return wrapper;
+    function editData(url, label, konten) {
+        const form = document.querySelector('#editTesti form');
+        form.action = url;
+        document.getElementById('label_edit').value = label;
+        document.getElementById('konten_edit').value = konten;
     }
 </script>
+
 
 @endsection

@@ -7,59 +7,40 @@ use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'label' => 'required|string|max:255',
+            'konten' => 'required|string|max:255',
+        ]);
+
+        Testimonial::create([
+            'label' => $request->label,
+            'konten' => $request->konten,
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Di Tambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Testimonial $testimonial)
+    public function update(Request $request, $id_testimonial)
     {
-        //
-    }
+        // Cari testimonial berdasarkan ID
+        $testimonial = Testimonial::findOrFail($id_testimonial);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Testimonial $testimonial)
-    {
-        //
-    }
+        // Validasi data input
+        $request->validate([
+            'label' => 'required|string|max:255',
+            'konten_testi' => 'required|string|max:255', // Sesuaikan dengan nama field di form
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Testimonial $testimonial)
-    {
-        //
-    }
+        // Update data testimonial
+        $testimonial->update([
+            'label' => $request->label,
+            'konten' => $request->konten_testi, // Sesuaikan dengan input dari form
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Testimonial $testimonial)
-    {
-        //
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Data Berhasil Diperbarui');
     }
 }
